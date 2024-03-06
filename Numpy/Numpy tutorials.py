@@ -184,3 +184,152 @@ print()
 r = arr_1r%arr_2r # This will return the remainder
 print("--- remainder : \n", r)
 print()
+
+# We can convert multi dimensional array into a single dimensional array
+
+a = np.arange(30)
+b=a.reshape(3,5,2)
+print(b)
+print()
+# So now we have multidimensional array and to convert it again to a single dimensional array we use ravel function
+c=b.ravel()
+print(c)
+print()
+# We can also use another method called flatten
+d = b.flatten()
+print(d)
+print()
+
+# We can also have linear space between the starting and ending point of the array
+# for example start is 20 and end is 40 and in between I want 4 intervals so by using linspace it will have elements -->
+# 20 24 28 32 36 40  ---> so here we will get the four elements as 24 28 32 36 as we needed a linear or equal space between elements so it has got the increment by 4
+
+vector = np.linspace(10,20,7) # here the first argument is starting point and the second argument is ending point and the third argument is the intervals
+print(vector)
+print()
+# as we needed equal space between each element of the array the numbers are in decimals
+
+# Now let us do some exercise 
+# consider the sales record over 3 regions asia europe and pacific
+# each region has sales record for 4 quarters for the year and has one dimensional array
+Asia_sales = [1002, 4523, 4123 , 3584]
+Europe_sales= [7854, 9654, 4582, 8543]
+Pacific_sales = [7845, 4512, 3652, 7452]
+
+# Now we will create one multi dimensional array from the above all one dimensional array
+Total_sales = np.array([Asia_sales,Europe_sales,Pacific_sales])
+print(Total_sales)
+print()
+# output will be 
+'''
+[[1002 4523 4123 3584]
+ [7854 9654 4582 8543]  # But what if we need to access the third element of this second row 
+ [7845 4512 3652 7452]]
+'''
+# --------  SLICING ---------- 
+# as we know that there are 3 rows and 4 columns and the numbering starts from 0 same as index
+# so to access the third element of second row we will use indexing
+custom = Total_sales[1][2]  # the number one represents second row which is the 1st argument and the number two is 2nd argument which represents the column
+print(custom)    # this should print 4582
+print()
+
+# but to access the sales record we need to remember the row and column, but what if there numberous rows and columns 
+# Let us consider that we need to access the record of third quarter of the Europe_sales
+# Now we will create a dictionary that consists the index no. of the regions and quarters so that it becomes easy to access the slicing element
+region = {"Asia_sales":0,"Europe_sales":1,"Pacific_sales":2} # This is dictionary of regions and their respective indices
+quarter ={"Q1":0,"Q2":1,"Q3":2,"Q4":3}
+# Now we will slice the element using the region name and quarter number
+
+cus_sales = Total_sales[region["Europe_sales"]][quarter["Q3"]]
+# this should print 4582
+print(cus_sales)
+print()
+
+# Array slicing :
+# This is same as List and string slicing in python
+
+ran_ge = np.arange(1,101)
+print(ran_ge)
+print()
+
+# We can slice the elements as we want 
+# case 1: For example we need the first 15 characters
+print(ran_ge[:15])
+print()
+# Case 2: For example we need to access all the elements starting from 69 to end
+print(ran_ge[68:])
+print()
+
+# Case 3: For example we need to access all the elements from 47 to 85
+print(ran_ge[46:85])
+print()
+
+# case 4: For example we need to access the elements with and increment
+print(ran_ge[::10]) # this will print the array elements with an increment of 10
+print()
+
+'''
+[0 1 2]
+[3 4 5]
+[6 7 8]
+'''
+# consider this is my array and I want to extract :
+'''
+[4 5]
+[7 8]
+'''
+# this can be done by specfying the row and column to print, but here too we will do slicing
+arr_S = np.arange(9)
+a = arr_S.reshape(3,3)
+# print(a)
+cus = a[1:,1:]  # In above example of sales we saw that we can access the elements of array using the specification of row and column
+# But in that specification we can also have slicing 
+# The 1st argument is for the row where we have specified that print from row 2nd till end
+# and then after comma we have done the same for column
+print(cus)
+print()
+
+# We can know the information about the array 
+# to know the shape or the number of rows and columns of the matrix we use shape function
+print(a.shape)
+
+# to know the dimension of the matrix we use ndim function
+print(a.ndim)
+
+
+# to know that how much memory does the array requires we use the itemsize function
+print(a.itemsize)
+print()
+
+# We can also know the datatype of the array using dtype function
+print(a.dtype)
+# it will return int 32 int i.e intergers and 32 that is 4 byte of info because if we divide 32 by 8 bits then we get 4
+
+# to know the size or the number of elements of the array we use size function
+print(a.size)
+
+# We can also find out the minimum and maximum value of the array
+print(a.min())
+print(a.max())
+
+# to know about all the commands of the numpy we can use dir function
+print(dir(np))
+print()
+
+# sum function will return the sum of all the elements of the array
+print(a.sum())
+
+# there are also commands like sqrt(array name) to return the square root of the individual elements or the array
+# also there is a command called std(array name) to return standard deviation of the array
+
+# lets consider that we have to create an empty array then we will use empty function
+b= np.empty((3,3),dtype=int)
+c= np.empty((3,3),dtype=float)
+d= np.empty((3,3),dtype=bool)
+e= np.empty((3,3),dtype=str)
+print(b)
+print(c)
+print(d)
+print(e)
+
+print()
