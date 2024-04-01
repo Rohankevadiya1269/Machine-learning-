@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import os
 # Pandas also have capacity of storing data in various dimensions such as one and two
 # the one dimensional data storing structure is called --- SERIES 
 # In numpy where in 1-d array the data is stored in row, here in series which is 1-d: data is stored in column
@@ -170,3 +172,165 @@ print()
 # so to delete it we will drop one of the duplicate column by using the drop method
 merged_data.drop(columns=["stu_id"], inplace= True)
 print(merged_data)
+print()
+
+# Now we will read the data from the csv file that we have converted from an excel file
+# for that there is a command that is read
+
+rd = pd.read_csv("C:\\Users\\kevad\\Downloads\\Personal_Shortlist(1).csv")  #  There is also an option to read csv, excel, html and various other files
+print(rd)
+print()
+# now this file contains 20 rows and if I need to show the top 5 rows then,..
+
+print(rd.head())
+print()
+# but what if we do not want 5 rows every time, in case we need 3 rows or maybe 7 rows then?
+# then we will use head command as --> rd.head(3) if we want 3 rows or rd.head(7) if we need 7 rows
+
+# to print the last 5, we will use tail,.. 
+print(rd.tail())
+print()
+
+# we can also know the no. of rows and columns
+print(rd.shape)
+print()
+
+# If we only want to know the number of rows then we will use the command len(rd)
+# If we want to know the columns details
+print(rd.columns)
+print()
+
+# we can change the name of the column
+rd.columns = ['col/uni','Ilts','city','app fee','fee','schlrshp','remarks']
+print(rd.head(2))
+print()
+
+# we can also create new column and do mathematical operation in it. let us try
+list = rd.tail()
+print(f'--->{list}')
+print()
+list['total_fee']=list['fee']+list["fee"]
+print(list)
+print()
+
+# we can filter the output as per our needs, like if we need the colleges whose fees is less than 20,000
+# then we can do this --> print(list.fees<20000)
+# we can also put multi filter inside it using and/or statement
+# for example --> print(list.fee<20000 & list.scholarship>7500)
+
+# for or statement -->print(list.fee<20000 | list.scholarship>7500)
+# we can filter the output using == sign as well 
+print("----->")
+nl = rd[(rd.Ilts =='6.5')]
+print(nl)
+print()
+
+
+tips=pd.read_csv("C:/Users/kevad/Downloads/Tips_rate_example.csv")
+print(tips)
+print()
+# to find the desired valued column we can find it with dataframe-name.contains,case=False,na=False(na=flase means no null values)
+desired_tip=tips[tips['Country_Name'].str.contains('Af',case=False,na=False)] 
+print(desired_tip)
+print()
+# We can also use dataframe_name.startswith,na=false to search for the desired element 
+desired_tip1=tips[tips['Country_Name'].str.startswith('Af',na=False)] 
+print(desired_tip1)
+print()
+# we can find the unique value by using the command ------->    dataframe_name.column_name.unique 
+print(tips.Income_group.unique())
+print()
+# To know the current working directory/folder we can use os library
+
+# If we need to print only specific columns then we can do it 
+print(tips[['Country_Name', 'Tip_rate','Income_group']].head(7))
+print("--------^")
+# we are interested in the top 5 data from the column then we use head(5), but what if from that 5 data we need only top 2
+# then we will have loc [1:2] after head (5) 1 and 2 are the starting and ending point 
+print(tips.head(5).loc[1:2])
+# it returns true or false based on the if the value of the columns of the row is NaN/ null or not
+print(tips.Country_code.isna())
+print()
+# other property is group by ()
+# consider that the tips csv file has various income groups, now we will find how many groups are there 
+print(tips.groupby('Income_group').size())
+print()
+# we can also know that how many groups are there and in that group how much data is there using other method than size
+# that is count()
+print(tips.groupby('Income_group').count())
+print()
+
+# here we are trying to find the average tip rate for each income group and for that we are using the aggregate(agg) method
+# as well as numpy's mean method
+print(tips.groupby('Income_group').agg({'Tip_rate':np.mean,'Income_group':np.size}))
+print()
+# we can also do the sum instead of finding mean 
+print(tips.groupby('Income_group').agg({'Tip_rate':np.sum,'Income_group':np.size}))
+print()
+
+print(tips.groupby('Income_group').agg({'Tip_rate':[np.size,np.mean,np.sum,np.min,np.max]}))
+print()
+
+# We can delete records as per conditions
+new_tip = tips.drop(12) # there are 13 columns and we have to delete the column number 12 which is of norway country
+print(new_tip)
+print()
+
+tips=tips.drop(0)
+print(tips)
+print()
+# we can get various info about the data
+# lets consider we want data which consists High Income 
+print(tips[tips['Income_group']=='High Income'])
+print()
+# there are 2 same income groups by mistakely
+# High income and High Income --> the difference is only capital and small I
+# so we can delete the data where Income_group is High income
+print('--------**')
+# to know the index of the the data we need, we use index method
+print(tips[tips['Income_group']=='High income'].index)
+print()
+# drop method need index to delete the data 
+# so that was the reason we knew how to know the index
+print(tips)
+print()
+tips = tips.drop(tips[tips['Income_group']=='High income'].index)
+# As we can see here the index 6 which was of High income of country --> England was deleted from the table
+print(tips)
+print()
+# Now we will know about the sorting 
+# by this we have sorted values by internet user in the increasing order
+tips_sorted = tips.sort_values(by=['Internet_user'])
+print(tips_sorted)
+print()
+# Here we have sorted the data by the increasing (ascending) order of the tip rate 
+print(tips.sort_values(by=['Tip_rate']))  # Here we can have multiple columns name for sorting
+
+print()
+# what if we need data in descending order ?
+print(tips.sort_values(by=['Tip_rate'], ascending=False))
+print()
+# we can convert the data type of the data 
+# example of the code is : tips['Tip_rate']=tips['Tip_rate'].astype('int')
+tips['Tip_rate']=tips['Tip_rate'].astype('int')
+print(tips)
+print(".....")
+
+# we can also check the data using the info method
+# It will return all the information like how many columns are there,what are the names of the columns
+# how many data types are present, how much memory is consumed in bytes
+print(tips.info())
+
+
+
+
+print()
+print(os.getcwd())
+# to change the current working directory we need to use the command chdir
+# we will write the code --> os.chdir('path')  
+
+# now if we dont have to write the whole path for reading the csv file then we can change the directory to current working directory
+# and then we just have to write the file name
+
+# for example if I change the working directory to (C:\Users\kevad\Downloads), then to read the csv file I just need 
+# to mention the file name that is Personal_Shortlist(1).csv
